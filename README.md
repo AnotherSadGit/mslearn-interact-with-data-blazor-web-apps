@@ -1,3 +1,9 @@
+# Overview
+A pizza ordering Blazor Server web app.  Written using Visual Studio Code, not Visual Studio.
+
+Based on the MS Learning Path "Build web applications with Blazor", https://learn.microsoft.com/en-us/training/paths/build-web-apps-with-blazor/  Specifically, the base project was forked as part of unit 3 of module "Interact with data in Blazor web apps": https://learn.microsoft.com/en-us/training/modules/interact-with-data-blazor-web-apps/3-exercise-create-user-interfaces-with-blazor-components
+
+The basic project is forked from repository https://github.com/MicrosoftDocs/mslearn-interact-with-data-blazor-web-apps.git with subsequent commits representing steps in the tutorial learning path.
 
 # Contributing
 
