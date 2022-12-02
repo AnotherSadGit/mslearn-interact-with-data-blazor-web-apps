@@ -43,7 +43,9 @@ Object, injected into components, that can access different parts of the URI, in
 * Full URI, eg http://www.contoso.com/pizzas/margherita?extratopping=pineapple
 * Base URI, eg http://www.contoso.com/
 * Base relative path, eg pizzas/margherita
-* Query string, eg ?extratopping=pineapple.  Requires use of QueryHelpers class from Microsoft.AspNetCore.WebUtilities to parse the full URI.  Example:
+* Query string, eg ?extratopping=pineapple.  Requires use of QueryHelpers class from Microsoft.AspNetCore.WebUtilities to parse the full URI.  
+
+### Example
 
 	@page "/pizzas"
 	@using Microsoft.AspNetCore.WebUtilities
@@ -71,8 +73,12 @@ Object, injected into components, that can access different parts of the URI, in
 			}
 		}
 	}
-	
-* NavigationManager can also redirect to another component via NavigationManager.NavigateTo(uri), where uri can be relative or absolute URI.  Example:
+
+Redirection via NavigationManager
+---------------------------------	
+NavigationManager can also redirect to another component via NavigationManager.NavigateTo(uri), where uri can be relative or absolute URI.  
+
+### Example
 
 	@page "/pizzas/{pizzaname}"
 	@inject NavigationManager NavManager
@@ -99,7 +105,7 @@ NavLink component
 -----------------
 Drop-in replacement for <a> tag.  Useful because it toggles an active CSS class when the link href matches the current URL, highlighting to the user which link is for the current page.
 
-Example: 
+### Example
 
 	@page "/pizzas"
 	@inject NavigationManager NavManager
@@ -125,3 +131,78 @@ Example:
 * NavLink Match attribute: Determines the type of match required to highlight the link.  Two options:
 	* NavLinkMatch.All: href must match entire current URL;
 	* NavLinkMatch.Prefix: href must match start of current URL.  eg <NavLink href="pizzas" Match="NavLinkMatch.Prefix"> would match both http://www.contoso.com/pizzas and http://www.contoso.com/pizzas/formaggio
+	
+Route Parameters
+----------------
+For accessing different parts of the URI in a component.
+
+* Route parameters are defined in @page directive inside curly braces.
+
+* Case insensitive.
+
+* Value is forwarded to a component parameter of the same name \(requires \[Parameter\] atttribute in the @code block\).
+
+### Example
+
+	@page "/FavoritePizzas/{favorite}"
+
+	<h1>Choose a Pizza</h1>
+
+	<p>Your favorite pizza is: @Favorite</p>
+
+	@code {
+		[Parameter]
+		public string Favorite { get; set; }
+	}
+	
+* Make a route parameter optional via trailing "?".  Set a default value in OnInitialized method or in OnParametersSet method.
+
+### Example
+
+	@page "/FavoritePizzas/{favorite?}"
+
+	<h1>Choose a Pizza</h1>
+
+	<p>Your favorite pizza is: @Favorite</p>
+
+	@code {
+		[Parameter]
+		public string Favorite { get; set; }
+		
+		protected override void OnInitialized()
+		{
+			Favorite ??= "Fiorentina";
+		}
+	}
+	
+Catch-all route parameter
+-------------------------
+If the route parameter may include a forward slash then prefix it with a "*" to make it a catch-all route parameter.
+
+### Example
+
+	@page "/FavoritePizza/{*favorites}"
+
+	<h1>Choose a Pizza</h1>
+
+	<p>Your favorites pizza are: @Favorites</p>
+
+	@code {
+		[Parameter]
+		public string Favorites { get; set; }
+	}
+
+Supplying URL http://www.contoso.com/favoritepizza/margherita/hawaiian results in the page displaying: 
+
+"Your favorite pizzas are: margherita/hawaiian"
+	
+Route Constraints
+-----------------
+Can specify a type for the route parameter with trailing ":<type>".  This is known as a route constraint.  
+
+### Example
+	@page "/FavoritePizza/{preferredsize:int}"
+	
+* Types for route constraints: bool, datetime, decimal, double, float, guid, int, long
+
+	
