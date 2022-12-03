@@ -73,6 +73,59 @@ Using the OnSubmit event.
 		}
 	}
 
+The EditContext object OnFieldChanged event can be wired up to an event handler that performs validation.  It will fire whenever any of the properties of the model being tracked by the EditContext object changes its value.
+
+### Example
+In the following EditForm the Submit button is disabled if there are any validation errors.  This is done by the EditContext.OnFieldChanged event handler.
+
+	@page "/checkout"
+	@using BlazingPizza.Services
+	@inject OrderState OrderState
+	@implements IDisposable
+
+	<div class="main">
+		<EditForm EditContext=editContext OnValidSubmit=PlaceOrder>
+			... code ommitted for clarity ...
+
+			<button class="checkout-button btn btn-warning" type="Submit" disabled=@isError>
+				Place order
+			</button>
+
+			<DataAnnotationsValidator />
+		</EditForm>
+	</div>
+
+	@code {
+		Order Order => OrderState.Order;
+
+		bool isError = false;
+		private EditContext editContext;
+
+		protected override void OnInitialized()
+		{
+			editContext = new(Order.DeliveryAddress);
+			editContext.OnFieldChanged += HandleFieldChanged;
+		}
+
+		async Task PlaceOrder()
+		{
+			isError = false;
+			
+			// Code ommitted for clarity
+		}
+
+		private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+		{
+			isError = !editContext.Validate();
+			StateHasChanged();
+		}
+
+		public void Dispose()
+		{
+			editContext.OnFieldChanged -= HandleFieldChanged;
+		}
+	}
+
 Declarative validation
 ----------------------
 Via:

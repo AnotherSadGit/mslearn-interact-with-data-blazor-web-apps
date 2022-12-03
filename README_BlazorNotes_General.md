@@ -13,6 +13,15 @@ eg `@special.Description`.  For reading the value of a member defined in the @co
 ### Control-flow directives
 @if else, @foreach, @for, @while and @do while
 
+### @using directive
+Equivalent of C# using directive, for specifying namespaces that will be used in a component.
+
+### @inject directive
+Injects a C# object into a component from the DI container (may instantiate it each time, or pass in a scoped instance, or a shared singleton instance).
+
+### @implements directive
+Specifies that the Blazor component implements an interface.  eg `@implements IDisposable`
+
 OnInitialized/OnInitializedAsync method
 ------------------------------------------
 Fires when component initialization is complete.  Page has received parameter values but has not yet been rendered.  Defined in component base class but can be overridden for a specific page. 
@@ -55,4 +64,8 @@ Blazor has no equivalent of a JavaScript alert.  You can call a JavaScript alert
 		}
 	}
 	
+Component lifecycle
+-------------------
+See MS Learn article "ASP.NET Core Razor component lifecycle", https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle
 
+Calling StateHasChanged() in a component lets it know its state has changed.  This may cause the component to be re-rendered.  StateHasChanged() is called automatically for EventCallback methods.
