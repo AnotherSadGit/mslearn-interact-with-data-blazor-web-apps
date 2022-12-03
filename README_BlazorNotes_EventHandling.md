@@ -77,6 +77,8 @@ To prevent blocking by long running procedures.
 	
 Set focus to a DOM element via an event
 ---------------------------------------
+NOTE: the FocusAsync method used to set focus, only works on HTML elements, not on Blazor input components.
+
 Only needed in unusual circumstances, eg directing the user to fix an error.  Otherwise it can be frustrating for the user, since forcing focus to a particular element make break their expectations or disrupt their workflow.
 
 Set focus via FocusAsync method of an ElementReference object.  The ElementReference object references the item to which you want to set the focus.
