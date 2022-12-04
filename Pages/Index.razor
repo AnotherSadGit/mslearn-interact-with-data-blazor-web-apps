@@ -74,9 +74,25 @@
 
     private async Task ShowConfirm(Pizza removePizza)
     {
-      if (await JsRuntime.InvokeAsync<bool>(
-          "confirm", $"Do you want to remove the {removePizza.Special.Name} from your order?")) {
-          OrderState.RemoveConfiguredPizza(removePizza);
+      var messageParams = new {
+        title = "Are you sure?",
+        text = $"Do you want to remove the {removePizza.Special.Name}from your order?",
+        icon = "warning",
+        buttons = new {
+            abort = new {
+                text = "Leave it in my order",
+                value = false
+            },
+            confirm = new {
+                text = "Remove pizza",
+                value = true
+            }
+        },
+        dangerMode = true
+      };
+
+      if (await JsRuntime.InvokeAsync<bool>("swal", messageParams)) {
+        OrderState.RemoveConfiguredPizza(removePizza);
       }
     }
 }
