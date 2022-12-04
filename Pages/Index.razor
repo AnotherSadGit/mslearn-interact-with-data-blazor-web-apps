@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @using BlazingPizza.Services
 @inject OrderState OrderState
+@inject IJSRuntime JsRuntime
 
 <div class="main">
   <ul class="pizza-cards">
@@ -43,7 +44,7 @@
                   <div class="item-price">
                       @configuredPizza.GetFormattedTotalPrice()
                   </div>
-                  <a @onclick="@(() => OrderState.RemoveConfiguredPizza(configuredPizza))" class="delete-item">x</a>
+                  <a @onclick="@(async () => await ShowConfirm(configuredPizza))" class="delete-item">x</a>
               </div>
             }
         </div>
@@ -68,7 +69,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        specials = await HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri + "specials");
+      specials = await HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri + "specials");
+    }
+
+    private async Task ShowConfirm(Pizza removePizza)
+    {
+      if (await JsRuntime.InvokeAsync<bool>(
+          "confirm", $"Do you want to remove the {removePizza.Special.Name} from your order?")) {
+          OrderState.RemoveConfiguredPizza(removePizza);
+      }
     }
 }
 		
