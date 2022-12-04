@@ -2,6 +2,8 @@ Notes about Blazor: Lifecycle Events
 ====================================
 Simon Elms, 4 Dec 2022
 
+See also MS Learn article "ASP.NET Core Razor component lifecycle", https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle
+
 Events that can occur during the lifecycle of a component, and methods that can handle those events:
 
 !(README_BlazorNotes_component-lifecycle.png)
@@ -127,6 +129,10 @@ UI view updates when:
 When OnAfterRender / OnAfterRenderAsync run the UI is fully functional and it's possible to interact with elements of the DOM and with JavaScript.  Call JavaScript via JS interop in OnAfterRender / OnAfterRenderAsync.
 
 ### StateHasChanged, ShouldRender and BuildRenderTree methods
+The StateHasChanged method lets Blazor know the component's state has changed and to rerender the component, if required.  
+
+StateHasChanged can be called automatically, for EventCallback methods, or manually from component code.  
+
 StateHasChanged calls the ShouldRender method of the component, which determines whether the change in state requires a rerender.
 
 By default ShouldRender returns true on state change but the method can be overridden to perform a check that may return false.

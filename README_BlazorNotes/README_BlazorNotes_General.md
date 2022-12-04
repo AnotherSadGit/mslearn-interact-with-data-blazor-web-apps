@@ -22,6 +22,27 @@ Injects a C# object into a component from the DI container (may instantiate it e
 ### @implements directive
 Specifies that the Blazor component implements an interface.  eg `@implements IDisposable`
 
+### @typeparam directive
+Specifies the type parameter for a component parameter.  Multiple @typeparam directives can be added to the same component, if it has multiple parameters with type parameters.
+eg
+
+	@typeparam TItem
+
+	@foreach(TItem item in Data ?? Array.Empty<TItem>())
+	{
+		<p>@ChildContent(item)</p>
+	}
+
+
+	@code {
+	  [Parameter]
+	  public IEnumerable<TItem> Data { get; set; }
+
+	  [Parameter]
+	  public RenderFragment<TItem> ChildContent { get; set; }
+	}
+
+
 OnInitialized/OnInitializedAsync method
 ------------------------------------------
 Fires when component initialization is complete.  Page has received parameter values but has not yet been rendered.  Defined in component base class but can be overridden for a specific page. 
