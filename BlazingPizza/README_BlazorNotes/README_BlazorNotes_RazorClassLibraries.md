@@ -85,3 +85,41 @@ If the Razor class library is on disk next to the Blazor application referencing
 Via the dotnet CLI, the command is: `dotnet add reference ../MyClassLibrary`
 
 If the Razor class library is packaged in a NuGet package, add it via the Visual Studio package manager or via the dotnet CLI command `dotnet add package MyClassLibrary`.
+
+Packaging Razor class library as NuGet package
+----------------------------------------------
+NuGet package requires the following fields in the .csproj file:
+* PackageId: Uniquely identifies the package in the NuGet repository.  Defaults to AssemblyName of the class library.
+* Version: Major.Minor.Patch[-Suffix], where -Suffix is optional, indicating a pre-release version (eg "-alpha").  Defaults to 1.0.0
+* Authors: Defaults to AssemblyName.
+* Company: Defaults to AssemblyName.
+
+Optional package properties:
+See "MSBuild pack target", https://learn.microsoft.com/en-us/nuget/reference/msbuild-targets#pack-target, for full list of properties.
+
+Optional package properties include:
+* Description
+* Copyright notice
+* Licensing information
+* Icons
+* Project URLs
+
+### Example .csproj file
+
+	<PropertyGroup>
+		<PackageId>Learn.MyFirstLibrary</PackageId>
+		<Version>0.1.0-alpha1</Version>
+		<Authors>Susan Developer, Terry Programmer</Authors>
+		<Company>AdventureWorks</Company>
+	</PropertyGroup>
+
+### Pack the project
+To pack the package and add it to the output folder of the project:
+* Visual Studio: Solution Explorer > right click on project file > Pack
+* Dotnet CLI: dotnet pack
+
+To configure the project to generate a package on build: 
+Via `<GeneratePackageOnBuild>True</GeneratePackageOnBuild>` in the same PropertyGroup as the other NuGet package properties.
+
+
+
