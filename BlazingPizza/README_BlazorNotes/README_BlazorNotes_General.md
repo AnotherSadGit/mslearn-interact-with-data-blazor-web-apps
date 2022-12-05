@@ -2,6 +2,24 @@ Notes about Blazor: General
 ===========================
 Simon Elms, 2 Dec 2022
 
+Adding debugging components for VS Code
+---------------------------------------
+VS Code cannot debug a Blazor server app out of the box.  Debugging components need to be added.
+
+Symptoms:
+* Hit F5 or select Run > Start Debugging.  
+* You will be prompted to select a debugger.  Select the suggested one (probably .NET 5+ and .NET Core).
+* Nothing happens.
+* If you try debugging again (F5, etc), you will be prompted to select a debugger again.
+
+Solution:
+* Select Run > Add Configuration... 
+* You will be prompted to select a debugger.  Select the suggested one (probably .NET 5+ and .NET Core).
+* A .vscode folder will be added to the project, containing the following files:
+	* launch.json
+	* tasks.json
+After this F5 and debugging will work.
+
 Directives
 ----------
 ### @code directive
@@ -52,6 +70,9 @@ Project Structure
 Folders and files that appear in a vanilla project created from a Blazor project template.
 
 See MS Learn page "ASP.NET Core Blazor project structure", https://learn.microsoft.com/en-us/aspnet/core/blazor/project-structure
+
+### _Imports.razor
+Razor directives to automatically import into each component page.  eg @using directives for namespaces that may be used in each component.
 
 Displaying an Alert
 -------------------
