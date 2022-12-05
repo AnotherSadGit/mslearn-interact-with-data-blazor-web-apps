@@ -83,7 +83,7 @@ Parameters for the Blazor component are available in SetParametersAsync via a Pa
 	
 OnInitialized / OnInitializedAync methods
 -----------------------------------------
-Inherited from ComponentBase but can be overriden if needed.  Run after the component has been constructed and the parameters have been set.
+Fires when component initialization is complete.  Component has been constructed and has received parameter values but has not yet been rendered.  Defined in component base class but can be overridden for a specific page.
 
 May run multiple times, depending on the value of the app's render-mode property:
 
