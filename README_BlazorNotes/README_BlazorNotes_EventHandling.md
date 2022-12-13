@@ -79,7 +79,7 @@ Set focus to a DOM element via an event
 ---------------------------------------
 NOTE: the FocusAsync method used to set focus, only works on HTML elements, not on Blazor input components.
 
-Only needed in unusual circumstances, eg directing the user to fix an error.  Otherwise it can be frustrating for the user, since forcing focus to a particular element make break their expectations or disrupt their workflow.
+Only needed in unusual circumstances, eg directing the user to fix an error.  Otherwise it can be frustrating for the user, since forcing focus to a particular element may break their expectations or disrupt their workflow.
 
 Set focus via FocusAsync method of an ElementReference object.  The ElementReference object references the item to which you want to set the focus.
 
@@ -288,3 +288,100 @@ If the child component event directive points directly to the EventCallback then
 		public EventCallback<MouseEventArgs> OnClickCallback { get; set; }
 	}
 
+#### Example with custom args
+DialogREsult enum: 
+
+    public enum DialogResult
+    {
+        Unknown = 0,
+        Cancel,
+        Ok
+    }
+
+Child component, TwoButtonDialog.razor:
+
+	<div class="dialog-container">
+		<div class="dialog">
+			<div class="dialog-title-generic">
+				<span>Are you sure?</span>
+			</div>
+			<form class="dialog-body">
+				<div>
+					<span>@Message</span>
+				</div>
+			</form>
+
+			<div class="dialog-buttons-two">
+				<button class="btn btn-secondary" @onclick="CancelClicked">No</button>
+				<button class="btn btn-primary" @onclick="OkClicked">Yes</button>
+			</div>
+		</div>
+	</div>
+
+	@code 
+	{
+		[Parameter] public string? Message { get; set; }
+
+		private async Task CancelClicked()
+		{
+			await OnResult.InvokeAsync(DialogResult.Cancel);
+		}
+
+		private async Task OkClicked()
+		{
+			await OnResult.InvokeAsync(DialogResult.Ok);
+		}
+
+		[Parameter] public EventCallback<DialogResult> OnResult { get; set; }
+	}
+
+Parent component:
+
+	<div>
+		...
+		@if (@TwoButtonDialogIsVisible)
+		{
+			<TwoButtonDialog
+			Message="Nothing happened, are you sure you want to press that button?"
+			OnResult="HandleDialogResult" />
+		}	
+		
+		<div class="page-buttons-single">
+			<button class="btn btn-success" @onclick="ShowDialog">Show dialog</button>
+		</div>	
+
+		<p>Dialog button pressed: @TwoButtonDialogButtonPressed</p>
+		...
+	</div>	
+
+	@code
+	{
+		private bool TwoButtonDialogIsVisible { get; set; } = false;
+
+		private string TwoButtonDialogButtonPressed { get; set; } = "[None]";
+
+		private void ShowDialog()
+		{
+			TwoButtonDialogIsVisible = true; 
+			TwoButtonDialogButtonPressed = "[None]";
+		}
+
+		private void HandleDialogResult(DialogResult result)
+		{
+			TwoButtonDialogIsVisible = false;
+
+			switch (result)
+			{
+				case DialogResult.Cancel:
+					TwoButtonDialogButtonPressed = "[Cancel]";
+					break;
+				case DialogResult.Ok:
+					TwoButtonDialogButtonPressed = "[OK]";
+					break;
+				default:
+					TwoButtonDialogButtonPressed = "[Unknown]";
+					break;
+			}
+			
+		}
+	}

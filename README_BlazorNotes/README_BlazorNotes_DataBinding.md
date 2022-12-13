@@ -29,7 +29,12 @@ Its effect varies depending on the control it's added to:
 
 @bind-value:event directive and @bind-value directive
 -----------------------------------------------------
-By default bound value updates when the DOM `onchange` event fires.  This occurs when you tab out of a textbox or hit the Enter key.
+@bind is just an overload of @bind-value, with the DOM event set to `onchange`.  So the following two commands are equivalent:
+
+	@bind="userName"
+	@bind-value="userName" @bind-value:event="onchange"
+
+The DOM `onchange` event fires when you tab out of a textbox or hit the Enter key.
 
 The event that causes the update can be changed via the @bind-value:event directive.  In that case the @bind-value directive is also needed.  
 
