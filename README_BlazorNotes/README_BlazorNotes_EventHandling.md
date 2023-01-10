@@ -289,7 +289,7 @@ If the child component event directive points directly to the EventCallback then
 	}
 
 #### Example with custom args
-DialogREsult enum: 
+DialogResult enum: 
 
     public enum DialogResult
     {

@@ -75,6 +75,8 @@ Using the OnSubmit event.
 
 The EditContext object OnFieldChanged event can be wired up to an event handler that performs validation.  It will fire whenever any of the properties of the model being tracked by the EditContext object changes its value.
 
+NOTE: EditForm can have a Model attribute or an EditContext attribute, not both.
+
 ### Example
 In the following EditForm the Submit button is disabled if there are any validation errors.  This is done by the EditContext.OnFieldChanged event handler.
 
@@ -129,7 +131,7 @@ In the following EditForm the Submit button is disabled if there are any validat
 Declarative validation
 ----------------------
 Via:
-* Data annotations: Against each Model property.  For in dicating if a property is required, what the valid data range is and the data format.
+* Data annotations: Against each Model property.  For indicating if a property is required, what the valid data range is and the data format.
 * DataAnnotationsValidator component within the EditForm component: Checks entered values against Model data annotations.
 * ValidationSummary component: Displays summary of all validation messages for submitted form.
 * ValidationMessage component: Displays validation message for specific Model property.
